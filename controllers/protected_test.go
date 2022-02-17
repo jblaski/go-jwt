@@ -43,7 +43,7 @@ func TestProfile(t *testing.T) {
 
 	c.Set("email", "jwt@email.com")
 
-	Profile(c)
+	GetProfile(c)
 
 	err = json.Unmarshal(w.Body.Bytes(), &profile)
 	assert.NoError(t, err)
@@ -75,7 +75,7 @@ func TestProfileNotFound(t *testing.T) {
 
 	c.Set("email", "notfound@email.com")
 
-	Profile(c)
+	GetProfile(c)
 
 	err = json.Unmarshal(w.Body.Bytes(), &profile)
 	assert.NoError(t, err)

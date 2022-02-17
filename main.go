@@ -28,7 +28,10 @@ func setupRouter() *gin.Engine {
 
 		protected := api.Group("protected").Use(middlewares.Autho())
 		{
-			protected.GET("/profile", controllers.Profile)
+			protected.GET("/profile", controllers.GetProfile)
+
+			protected.GET("/secret", controllers.GetSecret)
+			protected.PUT("/secret", controllers.PutSecret)
 		}
 	}
 

@@ -11,11 +11,22 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email" gorm:"unique"`
 	Password string `json:"password"`
+	Secret   string `json:"secret"`
 }
 
 // CreateUserRecord creates a user record in the database
 func (user *User) CreateUserRecord() error {
 	result := database.GlobalDB.Create(&user)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+// UpdateUserSecret sets the "secret" of a user record in the database
+func (user *User) UpdateUserSecret() error {
+	result := database.GlobalDB.Update("Secret", &user)
 	if result.Error != nil {
 		return result.Error
 	}

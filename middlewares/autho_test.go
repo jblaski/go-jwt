@@ -19,7 +19,7 @@ func TestAuthoNoHeader(t *testing.T) {
 	router := gin.Default()
 	router.Use(Autho())
 
-	router.GET("/api/protected/profile", controllers.Profile)
+	router.GET("/api/protected/profile", controllers.GetProfile)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/api/protected/profile", nil)
@@ -32,7 +32,7 @@ func TestAuthoInvalidTokenFormat(t *testing.T) {
 	router := gin.Default()
 	router.Use(Autho())
 
-	router.GET("/api/protected/profile", controllers.Profile)
+	router.GET("/api/protected/profile", controllers.GetProfile)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/api/protected/profile", nil)
@@ -47,7 +47,7 @@ func TestAuthoInvalidToken(t *testing.T) {
 	router := gin.Default()
 	router.Use(Autho())
 
-	router.GET("/api/protected/profile", controllers.Profile)
+	router.GET("/api/protected/profile", controllers.GetProfile)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/api/protected/profile", nil)
@@ -90,7 +90,7 @@ func TestValidToken(t *testing.T) {
 	router := gin.Default()
 	router.Use(Autho())
 
-	router.GET("/api/protected/profile", controllers.Profile)
+	router.GET("/api/protected/profile", controllers.GetProfile)
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/api/protected/profile", nil)
