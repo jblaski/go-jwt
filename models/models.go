@@ -25,8 +25,8 @@ func (user *User) CreateUserRecord() error {
 }
 
 // UpdateUserSecret sets the "secret" of a user record in the database
-func (user *User) UpdateUserSecret() error {
-	result := database.GlobalDB.Update("Secret", &user)
+func (user *User) UpdateUserSecret(newSecret string) error {
+	result := database.GlobalDB.Model(&user).Update("Secret", newSecret)
 	if result.Error != nil {
 		return result.Error
 	}

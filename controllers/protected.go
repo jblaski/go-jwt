@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jblaski/go-jwt/database"
 	"github.com/jblaski/go-jwt/models"
@@ -70,13 +72,28 @@ func GetSecret(c *gin.Context) {
 	c.JSON(200, user.Secret)
 }
 
+type SecretPayload struct {
+	Secret string `json:"secret"`
+}
+
+// New functionality
 func PutSecret(c *gin.Context) {
-	//TODO: how to update value? What should a PUT reply with>
+	//TODO: what should a PUT reply with, if anything?
 	var user models.User
+	email, _ := c.Get("email") // get the email of the user
 
-	email, _ := c.Get("email")
+	var secretPayload SecretPayload // get the secret from the supplied message body
+	err := c.ShouldBindJSON(&secretPayload)
+	if err != nil {
+		log.Println(err)
+		c.JSON(400, gin.H{
+			"msg": "invalid json",
+		})
+		c.Abort()
+		return
+	}
 
-	result := database.GlobalDB.Where("email = ?", email.(string)).First(&user)
+	result := database.GlobalDB.Where("email = ?", email.(string)).First(&user) // get user from DB using email
 
 	if result.Error == gorm.ErrRecordNotFound {
 		c.JSON(404, gin.H{
@@ -94,7 +111,5 @@ func PutSecret(c *gin.Context) {
 		return
 	}
 
-	user.Secret = "test"
-	user.UpdateUserSecret()
-
+	user.UpdateUserSecret(secretPayload.Secret) // update their secret
 }
